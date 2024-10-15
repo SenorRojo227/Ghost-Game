@@ -50,6 +50,7 @@ func _on_float_timer_timeout() -> void:
 	$Shadow.scale.x -= 0.1 * float_direction
 	
 func process_movement():
+	print(fifo_movement_list)
 	if movement_done:
 		fifo_movement_list.pop_front()
 		
@@ -57,6 +58,7 @@ func process_movement():
 	
 	if fifo_movement_list.size() > 0:
 		set_direction()
+		set_target_tile()
 		move_character()
 		
 	
@@ -74,10 +76,11 @@ func add_movement_to_buffer(movement_direction):
 	if fifo_movement_list.size() >= movement_buffer_size:
 		if is_opposite_movement(movement_direction, fifo_movement_list[1]):
 			fifo_movement_list.pop_back()
-			fifo_movement_list.append(movement_direction)
-			movement_done = true
-		print("Too many movements for the buffer. Discarded: " 
-			+ direction.keys()[movement_direction])
+			print("Removed from back of stack")
+			#movement_done = true
+		else:
+			print("Too many movements for the buffer. Discarded: " 
+				+ direction.keys()[movement_direction])
 	else:
 		handle_opposite_movement_inputs(movement_direction)
 		fifo_movement_list.append(movement_direction)
@@ -114,25 +117,39 @@ func set_direction():
 		direction.UP:
 			$AnimatedSprite2D.animation = "up_idle"
 			$AnimatedSprite2D.flip_h = false
-			initial_y -= 1
 		direction.DOWN:
 			$AnimatedSprite2D.animation = "down_idle"
 			$AnimatedSprite2D.flip_h = false
-			initial_y += 1
 		direction.RIGHT:
 			$AnimatedSprite2D.animation = "side_idle"
 			$AnimatedSprite2D.flip_h = false
-			initial_x += 1
 		direction.LEFT:
 			$AnimatedSprite2D.animation = "side_idle"
 			$AnimatedSprite2D.flip_h = true
-			initial_x -= 1
 		_:
 			print("Invalid movement type received.")
 			fifo_movement_list.pop_front()
 			return
 	move_direction = fifo_movement_list[0]
-	movement_done = false
+	
+	
+func set_target_tile():	
+	if !movement_done:
+		return
+	else:
+		movement_done = false
+		
+	match fifo_movement_list[0]:
+		direction.UP:
+			initial_y -= 1
+		direction.DOWN:
+			initial_y += 1
+		direction.RIGHT:
+			initial_x += 1
+		direction.LEFT:
+			initial_x -= 1
+		_:
+			return
 	
 func move_character():
 	match fifo_movement_list[0]:
