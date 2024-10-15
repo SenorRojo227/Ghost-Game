@@ -61,15 +61,50 @@ func process_movement():
 		
 	
 func receive_movement_inputs():
-	if Input.is_action_pressed("up"):
+	if Input.is_action_just_pressed("up"):
 		add_movement_to_buffer(direction.UP)
-	elif Input.is_action_pressed("down"):
+	elif Input.is_action_just_pressed("down"):
 		add_movement_to_buffer(direction.DOWN)
-	elif Input.is_action_pressed("right"):
+	elif Input.is_action_just_pressed("right"):
 		add_movement_to_buffer(direction.RIGHT)
-	elif Input.is_action_pressed("left"):
+	elif Input.is_action_just_pressed("left"):
 		add_movement_to_buffer(direction.LEFT)
+		
+func add_movement_to_buffer(movement_direction):
+	if fifo_movement_list.size() >= movement_buffer_size:
+		if is_opposite_movement(movement_direction, fifo_movement_list[1]):
+			fifo_movement_list.pop_back()
+			fifo_movement_list.append(movement_direction)
+			movement_done = true
+		print("Too many movements for the buffer. Discarded: " 
+			+ direction.keys()[movement_direction])
+	else:
+		handle_opposite_movement_inputs(movement_direction)
+		fifo_movement_list.append(movement_direction)
 	
+func handle_opposite_movement_inputs(movement_direction):
+	if fifo_movement_list.size() == 0:
+		return
+		
+	if is_opposite_movement(movement_direction, fifo_movement_list[0]):
+		fifo_movement_list.pop_front()
+		movement_done = true
+
+func is_opposite_movement(movement_direction_input, stored_direction):
+	match movement_direction_input:
+		direction.UP:
+			if stored_direction == direction.DOWN:
+				return true
+		direction.DOWN:
+			if stored_direction == direction.UP:
+				return true
+		direction.RIGHT:
+			if stored_direction == direction.LEFT:
+				return true
+		direction.LEFT:
+			if stored_direction == direction.RIGHT:
+				return true
+	return false
 	
 func set_direction():	
 	if fifo_movement_list.size() == 0 || !movement_done:
@@ -98,13 +133,6 @@ func set_direction():
 			return
 	move_direction = fifo_movement_list[0]
 	movement_done = false
-	
-func add_movement_to_buffer(movement_direction):
-	if fifo_movement_list.size() >= movement_buffer_size:
-		print("Too many movements for the buffer. Discarded: " 
-			+ direction.keys()[movement_direction])
-	else:
-		fifo_movement_list.append(movement_direction)
 	
 func move_character():
 	match fifo_movement_list[0]:
