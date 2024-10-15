@@ -1,0 +1,96 @@
+[gd_scene load_steps=12 format=3 uid="uid://ccg1sypslu0bg"]
+
+[ext_resource type="Script" path="res://Scripts/Player.gd" id="1_wb3b5"]
+[ext_resource type="Texture2D" uid="uid://dj1rja4cy35ik" path="res://Assets/Ghost1.png" id="2_ahfys"]
+[ext_resource type="Texture2D" uid="uid://diw7t5bawvemv" path="res://Assets/Shadow.png" id="2_t44j6"]
+[ext_resource type="Texture2D" uid="uid://dean3f6ysxm2g" path="res://Assets/Ghost2.png" id="3_fvmx1"]
+[ext_resource type="Texture2D" uid="uid://dnfriiymjl8vx" path="res://Assets/Ghost6.png" id="4_04bhc"]
+[ext_resource type="Texture2D" uid="uid://bowbwpffry2ah" path="res://Assets/Ghost3.png" id="4_5l2tf"]
+[ext_resource type="Texture2D" uid="uid://3mbebla1yox1" path="res://Assets/Ghost7.png" id="5_lbb7e"]
+[ext_resource type="Texture2D" uid="uid://1vyps2otvro" path="res://Assets/Ghost5.png" id="5_qm3je"]
+[ext_resource type="Texture2D" uid="uid://cf0iafdsksn86" path="res://Assets/Ghost4.png" id="6_2kaih"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_bk1q6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_qm3je")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_04bhc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_lbb7e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_04bhc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_qm3je")
+}],
+"loop": false,
+"name": &"down_idle",
+"speed": 15.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_ahfys")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_fvmx1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_5l2tf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_fvmx1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_ahfys")
+}],
+"loop": false,
+"name": &"side_idle",
+"speed": 15.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_2kaih")
+}],
+"loop": true,
+"name": &"up_idle",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3g4kp"]
+radius = 22.8
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_wb3b5")
+metadata/_edit_group_ = true
+
+[node name="Shadow" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.764706)
+position = Vector2(0, 20)
+texture = ExtResource("2_t44j6")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_bk1q6")
+animation = &"down_idle"
+frame = 4
+frame_progress = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_3g4kp")
+
+[node name="Timers" type="Node2D" parent="."]
+
+[node name="BlinkTimer" type="Timer" parent="Timers"]
+wait_time = 5.0
+autostart = true
+
+[node name="FloatTimer" type="Timer" parent="Timers"]
+wait_time = 0.5
+autostart = true
+
+[connection signal="timeout" from="Timers/BlinkTimer" to="." method="_on_blink_timer_timeout"]
+[connection signal="timeout" from="Timers/FloatTimer" to="." method="_on_float_timer_timeout"]

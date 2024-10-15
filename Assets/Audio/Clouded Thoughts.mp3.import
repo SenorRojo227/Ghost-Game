@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dnepm4wody8y2"
+path="res://.godot/imported/Clouded Thoughts.mp3-7d165f89806b0c9f63a89980f8ef91ce.mp3str"
+
+[deps]
+
+source_file="res://Assets/Audio/Clouded Thoughts.mp3"
+dest_files=["res://.godot/imported/Clouded Thoughts.mp3-7d165f89806b0c9f63a89980f8ef91ce.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
