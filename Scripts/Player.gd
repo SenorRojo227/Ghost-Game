@@ -1,26 +1,29 @@
 extends CharacterBody2D
 
-@export var initial_x : int
-@export var initial_y : int
+#@export var initial_x : int
+#@export var initial_y : int
+@export var grid_pos : Vector2
+@export var map_path : String
 
-enum direction {IDLE, UP, DOWN, LEFT, RIGHT}
+var map_points: Array[Vector2]
 
-var move_direction
-var movement_done
-var fifo_movement_list
+enum Direction {IDLE, UP, DOWN, LEFT, RIGHT}
+
+var move_direction : Direction = Direction.IDLE
+var movement_done : bool = true
+var fifo_movement_list : Array[Direction] = []
 var movement_buffer_size = 2
-var float_distance
-var float_direction
+var float_distance : float = 0
+var float_direction : float = -1
 
 
 func _ready() -> void:
-	movement_done = true
-	float_distance = 0
-	float_direction = -1
-	position.x = 48 * initial_x + 24
-	position.y = 48 * initial_y + 16
-	move_direction = direction.IDLE
-	fifo_movement_list = []
+	# Load the map
+	map_points = load(map_path).new().get_map_points()
+	# Get into starting position in the centre of the screen
+	position.x = 48 * grid_pos.x + 24
+	position.y = 48 * grid_pos.y + 16
+	
 
 func _process(delta: float) -> void:
 	
@@ -50,7 +53,6 @@ func _on_float_timer_timeout() -> void:
 	$Shadow.scale.x -= 0.1 * float_direction
 	
 func process_movement():
-	print(fifo_movement_list)
 	if movement_done:
 		fifo_movement_list.pop_front()
 		
@@ -58,19 +60,18 @@ func process_movement():
 	
 	if fifo_movement_list.size() > 0:
 		set_direction()
-		set_target_tile()
 		move_character()
 		
 	
 func receive_movement_inputs():
 	if Input.is_action_just_pressed("up"):
-		add_movement_to_buffer(direction.UP)
+		add_movement_to_buffer(Direction.UP)
 	elif Input.is_action_just_pressed("down"):
-		add_movement_to_buffer(direction.DOWN)
+		add_movement_to_buffer(Direction.DOWN)
 	elif Input.is_action_just_pressed("right"):
-		add_movement_to_buffer(direction.RIGHT)
+		add_movement_to_buffer(Direction.RIGHT)
 	elif Input.is_action_just_pressed("left"):
-		add_movement_to_buffer(direction.LEFT)
+		add_movement_to_buffer(Direction.LEFT)
 		
 func add_movement_to_buffer(movement_direction):
 	if fifo_movement_list.size() >= movement_buffer_size:
@@ -80,7 +81,7 @@ func add_movement_to_buffer(movement_direction):
 			#movement_done = true
 		else:
 			print("Too many movements for the buffer. Discarded: " 
-				+ direction.keys()[movement_direction])
+				+ Direction.keys()[movement_direction])
 	else:
 		handle_opposite_movement_inputs(movement_direction)
 		fifo_movement_list.append(movement_direction)
@@ -95,82 +96,80 @@ func handle_opposite_movement_inputs(movement_direction):
 
 func is_opposite_movement(movement_direction_input, stored_direction):
 	match movement_direction_input:
-		direction.UP:
-			if stored_direction == direction.DOWN:
+		Direction.UP:
+			if stored_direction == Direction.DOWN:
 				return true
-		direction.DOWN:
-			if stored_direction == direction.UP:
+		Direction.DOWN:
+			if stored_direction == Direction.UP:
 				return true
-		direction.RIGHT:
-			if stored_direction == direction.LEFT:
+		Direction.RIGHT:
+			if stored_direction == Direction.LEFT:
 				return true
-		direction.LEFT:
-			if stored_direction == direction.RIGHT:
+		Direction.LEFT:
+			if stored_direction == Direction.RIGHT:
 				return true
 	return false
 	
+func set_animation_direction(animation, flip_boolean):
+	$AnimatedSprite2D.animation = animation
+	$AnimatedSprite2D.flip_h = flip_boolean
+	
 func set_direction():	
-	if fifo_movement_list.size() == 0 || !movement_done:
-		return
-	
-	match fifo_movement_list[0]:
-		direction.UP:
-			$AnimatedSprite2D.animation = "up_idle"
-			$AnimatedSprite2D.flip_h = false
-		direction.DOWN:
-			$AnimatedSprite2D.animation = "down_idle"
-			$AnimatedSprite2D.flip_h = false
-		direction.RIGHT:
-			$AnimatedSprite2D.animation = "side_idle"
-			$AnimatedSprite2D.flip_h = false
-		direction.LEFT:
-			$AnimatedSprite2D.animation = "side_idle"
-			$AnimatedSprite2D.flip_h = true
-		_:
-			print("Invalid movement type received.")
-			fifo_movement_list.pop_front()
-			return
-	move_direction = fifo_movement_list[0]
-	
-	
-func set_target_tile():	
 	if !movement_done:
 		return
 	else:
 		movement_done = false
 		
+	var temp_grid_pos = grid_pos
 	match fifo_movement_list[0]:
-		direction.UP:
-			initial_y -= 1
-		direction.DOWN:
-			initial_y += 1
-		direction.RIGHT:
-			initial_x += 1
-		direction.LEFT:
-			initial_x -= 1
+		Direction.UP:
+			set_animation_direction("up_idle", false)
+			temp_grid_pos.y -= 1
+		Direction.DOWN:
+			set_animation_direction("down_idle", false)
+			temp_grid_pos.y += 1
+		Direction.RIGHT:
+			set_animation_direction("side_idle", false)
+			temp_grid_pos.x += 1
+		Direction.LEFT:
+			set_animation_direction("side_idle", true)
+			temp_grid_pos.x -= 1
 		_:
+			print("Invalid movement direction provided!")
 			return
+	if not_going_to_hit_wall(temp_grid_pos):
+		grid_pos = temp_grid_pos
+		move_direction = fifo_movement_list[0]
+	else:
+		fifo_movement_list.pop_front()
+		movement_done = true
 	
 func move_character():
+	if fifo_movement_list.size() == 0:
+		return
+		
 	match fifo_movement_list[0]:
-		direction.UP:
+		Direction.UP:
 			position.y -= 2
-			if position.y == (48 * initial_y + 16):
-				move_direction = direction.IDLE
+			if position.y == (48 * grid_pos.y + 16):
+				move_direction = Direction.IDLE
 				movement_done = true
-		direction.DOWN:
+		Direction.DOWN:
 			position.y += 2
-			if position.y == (48 * initial_y + 16):
-				move_direction = direction.IDLE
+			if position.y == (48 * grid_pos.y + 16):
+				move_direction = Direction.IDLE
 				movement_done = true
-		direction.RIGHT:
+		Direction.RIGHT:
 			position.x += 2
-			if position.x == (48 * initial_x + 24):
-				move_direction = direction.IDLE
+			if position.x == (48 * grid_pos.x + 24):
+				move_direction = Direction.IDLE
 				movement_done = true
-		direction.LEFT:
+		Direction.LEFT:
 			position.x -= 2
-			if position.x == (48 * initial_x + 24):
-				move_direction = direction.IDLE
+			if position.x == (48 * grid_pos.x + 24):
+				move_direction = Direction.IDLE
 				movement_done = true
+	
+func not_going_to_hit_wall(position_to_move_to):
+	return !map_points.has(position_to_move_to)
 	

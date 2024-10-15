@@ -51,8 +51,8 @@ tile_set = SubResource("TileSet_7u6wo")
 [node name="Player" parent="." instance=ExtResource("1_dnars")]
 position = Vector2(600, 350)
 collision_mask = 2
-initial_x = 12
-initial_y = 7
+grid_pos = Vector2(12, 7)
+map_path = "res://Assets/MapData/map1_points.gd"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_v1al8")
