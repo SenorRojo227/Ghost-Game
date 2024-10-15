@@ -6,60 +6,26 @@ extends CharacterBody2D
 enum direction {IDLE, UP, DOWN, LEFT, RIGHT}
 
 var move_direction
+var movement_done
+var fifo_movement_list
+var movement_buffer_size = 2
 var float_distance
 var float_direction
 
 
 func _ready() -> void:
+	movement_done = true
 	float_distance = 0
 	float_direction = -1
 	position.x = 48 * initial_x + 24
 	position.y = 48 * initial_y + 16
 	move_direction = direction.IDLE
+	fifo_movement_list = []
 
 func _process(delta: float) -> void:
 	
-	# Detect direction player is moving
-	match move_direction:
-		direction.IDLE:
-			# Change animation based on user input
-			if Input.is_action_just_pressed("up"):
-				$AnimatedSprite2D.animation = "up_idle"
-				$AnimatedSprite2D.flip_h = false
-				move_direction = direction.UP
-				initial_y -= 1
-			elif Input.is_action_just_pressed("down"):
-				$AnimatedSprite2D.animation = "down_idle"
-				$AnimatedSprite2D.flip_h = false
-				move_direction = direction.DOWN
-				initial_y += 1
-			elif Input.is_action_just_pressed("right"):
-				$AnimatedSprite2D.animation = "side_idle"
-				$AnimatedSprite2D.flip_h = false
-				move_direction = direction.RIGHT
-				initial_x += 1
-			elif Input.is_action_just_pressed("left"):
-				$AnimatedSprite2D.animation = "side_idle"
-				$AnimatedSprite2D.flip_h = true
-				move_direction = direction.LEFT
-				initial_x -= 1
-		# Move the player each frame until destination is reached
-		direction.UP:
-			position.y -= 2
-			if position.y == (48 * initial_y + 16):
-				move_direction = direction.IDLE
-		direction.DOWN:
-			position.y += 2
-			if position.y == (48 * initial_y + 16):
-				move_direction = direction.IDLE
-		direction.RIGHT:
-			position.x += 2
-			if position.x == (48 * initial_x + 24):
-				move_direction = direction.IDLE
-		direction.LEFT:
-			position.x -= 2
-			if position.x == (48 * initial_x + 24):
-				move_direction = direction.IDLE
+	# Read inputs
+	process_movement()
 	
 	# Start dialogue
 	if Input.is_action_just_pressed("ui_accept"):
@@ -82,3 +48,84 @@ func _on_float_timer_timeout() -> void:
 	if abs(float_distance) > 2:
 		float_direction *= -1
 	$Shadow.scale.x -= 0.1 * float_direction
+	
+func process_movement():
+	if movement_done:
+		fifo_movement_list.pop_front()
+		
+	receive_movement_inputs()
+	
+	if fifo_movement_list.size() > 0:
+		set_direction()
+		move_character()
+		
+	
+func receive_movement_inputs():
+	if Input.is_action_pressed("up"):
+		add_movement_to_buffer(direction.UP)
+	elif Input.is_action_pressed("down"):
+		add_movement_to_buffer(direction.DOWN)
+	elif Input.is_action_pressed("right"):
+		add_movement_to_buffer(direction.RIGHT)
+	elif Input.is_action_pressed("left"):
+		add_movement_to_buffer(direction.LEFT)
+	
+	
+func set_direction():	
+	if fifo_movement_list.size() == 0 || !movement_done:
+		return
+	
+	match fifo_movement_list[0]:
+		direction.UP:
+			$AnimatedSprite2D.animation = "up_idle"
+			$AnimatedSprite2D.flip_h = false
+			initial_y -= 1
+		direction.DOWN:
+			$AnimatedSprite2D.animation = "down_idle"
+			$AnimatedSprite2D.flip_h = false
+			initial_y += 1
+		direction.RIGHT:
+			$AnimatedSprite2D.animation = "side_idle"
+			$AnimatedSprite2D.flip_h = false
+			initial_x += 1
+		direction.LEFT:
+			$AnimatedSprite2D.animation = "side_idle"
+			$AnimatedSprite2D.flip_h = true
+			initial_x -= 1
+		_:
+			print("Invalid movement type received.")
+			fifo_movement_list.pop_front()
+			return
+	move_direction = fifo_movement_list[0]
+	movement_done = false
+	
+func add_movement_to_buffer(movement_direction):
+	if fifo_movement_list.size() >= movement_buffer_size:
+		print("Too many movements for the buffer. Discarded: " 
+			+ direction.keys()[movement_direction])
+	else:
+		fifo_movement_list.append(movement_direction)
+	
+func move_character():
+	match fifo_movement_list[0]:
+		direction.UP:
+			position.y -= 2
+			if position.y == (48 * initial_y + 16):
+				move_direction = direction.IDLE
+				movement_done = true
+		direction.DOWN:
+			position.y += 2
+			if position.y == (48 * initial_y + 16):
+				move_direction = direction.IDLE
+				movement_done = true
+		direction.RIGHT:
+			position.x += 2
+			if position.x == (48 * initial_x + 24):
+				move_direction = direction.IDLE
+				movement_done = true
+		direction.LEFT:
+			position.x -= 2
+			if position.x == (48 * initial_x + 24):
+				move_direction = direction.IDLE
+				movement_done = true
+	
