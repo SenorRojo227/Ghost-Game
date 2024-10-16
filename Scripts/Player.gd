@@ -7,14 +7,12 @@ var float_direction : float = -1
 
 func _ready() -> void:
 	pass
-
 	
 
 func _process(delta: float) -> void:
 	
 	# Read inputs
 	receive_movement_inputs()
-
 	
 	# Start dialogue
 	if Input.is_action_just_pressed("ui_accept"):
@@ -37,6 +35,7 @@ func _on_float_timer_timeout() -> void:
 	if abs(float_distance) > 2:
 		float_direction *= -1
 	$Shadow.scale.x -= 0.1 * float_direction
+	
 
 func receive_movement_inputs():
 	if Input.is_action_just_pressed("up"):
@@ -47,3 +46,6 @@ func receive_movement_inputs():
 		movement_component.add_to_movement_buffer(movement_component.Direction.RIGHT)
 	elif Input.is_action_just_pressed("left"):
 		movement_component.add_to_movement_buffer(movement_component.Direction.LEFT)
+		
+
+	

@@ -8,15 +8,20 @@ enum OccupantType {EMPTY, WALL, PLAYER, DOOR, ENEMY}
 
 var map : Array[GridPoint]
 
+signal map_ready()
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	for x in size_x:
 		for y in size_y:
+			# print(Vector2(x, y)) # print for debug purposes
 			map.append(GridPoint.new(Vector2(x, y), OccupantType.EMPTY))
 		pass
-
+	map_ready.emit()
+	print("map is ready!")
 
 func claim_initial_grid_point(location: Vector2, occupant_type: OccupantType):
+	print(OccupantType.find_key(occupant_type), " claimed initial spot of ", location)
 	search_for_grid_point(location).tile_occupant = occupant_type
 	
 
@@ -26,6 +31,7 @@ func claim_grid_point(previous_location: Vector2, location: Vector2, occupant_ty
 		if grid_point.tile_occupant == OccupantType.EMPTY:
 			search_for_grid_point(previous_location).tile_occupant = OccupantType.EMPTY
 			grid_point.tile_occupant = occupant_type
+			print(OccupantType.find_key(occupant_type), " claimed ", location)
 			return true
 	return false
 	
