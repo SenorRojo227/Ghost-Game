@@ -56,8 +56,11 @@ position = Vector2(600, 350)
 collision_mask = 2
 movement_component = NodePath("MovementComponent")
 
-[node name="MovementComponent" type="Node2D" parent="Player"]
+[node name="MovementComponent" type="Node2D" parent="Player" node_paths=PackedStringArray("grid_component")]
 script = ExtResource("3_x2fcw")
+grid_pos = Vector2(12, 7)
+grid_component = NodePath("../../GridComponent")
+character_type = 2
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_v1al8")
@@ -69,3 +72,5 @@ position = Vector2(214, 360)
 
 [node name="GridComponent" type="Node2D" parent="."]
 script = ExtResource("6_eajo7")
+size_x = 20
+size_y = 20

@@ -38,7 +38,7 @@ func _on_float_timer_timeout() -> void:
 	
 
 func receive_movement_inputs():
-	if Input.is_action_pressed("up"):
+	if Input.is_action_just_pressed("up"):
 		movement_component.add_to_movement_buffer(movement_component.Direction.UP)
 	elif Input.is_action_just_pressed("down"):
 		movement_component.add_to_movement_buffer(movement_component.Direction.DOWN)

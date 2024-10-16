@@ -3,59 +3,67 @@ class_name MovementComponent
 
 @export var grid_pos : Vector2
 @export var grid_component : GridComponent
+@export var character_type : GridComponent.OccupantType
 
 enum Direction {IDLE, UP, DOWN, LEFT, RIGHT}
 
 const movement_buffer_max_size: int = 2
 var movement_buffer : Array[Direction] = []
-var movement_done: bool = false
+var movement_done: bool = true
 
 func _ready() -> void:
 	pass
 	
 func _process(delta: float) -> void:
-	print(grid_pos)
 	handle_movement()
+	move_character()
 	
 func handle_movement():
-	if movement_done == true:
-		movement_buffer.pop_front()
+	if movement_buffer.size() == 0 || movement_done == false:
+		return
 	
-	
+	var temp_grid_pos = grid_pos
+	match movement_buffer[0]:
+		Direction.UP:
+			temp_grid_pos.y -= 1
+		Direction.DOWN:
+			temp_grid_pos.y += 1
+		Direction.RIGHT:
+			temp_grid_pos.x += 1
+		Direction.LEFT:
+			temp_grid_pos.x -= 1
 
-func add_to_movement_buffer(direction):
-	if movement_buffer.size() >= movement_buffer_max_size:
-		if is_opposite_movement(direction, movement_buffer[1]):
-			movement_buffer.pop_back()
-			#movement_done = true
-		else:
-			print("Too many movements for the buffer. Discarded: " 
-				+ Direction.keys()[direction])
-	else:
-		handle_opposite_movement_inputs(direction)
-		movement_buffer.append(direction)
+	if grid_component.claim_grid_point(grid_pos, temp_grid_pos, character_type):
+		movement_done = false
+		grid_pos = temp_grid_pos
 	
-func handle_opposite_movement_inputs(movement_direction):
+func move_character():
 	if movement_buffer.size() == 0:
 		return
 		
-	if is_opposite_movement(movement_direction, movement_buffer[0]):
-		movement_buffer.pop_front()
-		movement_done = true
-	
-
-func is_opposite_movement(movement_direction_input, stored_direction):
-	match movement_direction_input:
+	match movement_buffer[0]:
 		Direction.UP:
-			if stored_direction == Direction.DOWN:
-				return true
+			get_parent().position.y -= 2
+			if get_parent().position.y == (48 * grid_pos.y + 16):
+				movement_buffer.pop_front()
+				movement_done = true
 		Direction.DOWN:
-			if stored_direction == Direction.UP:
-				return true
+			get_parent().position.y += 2
+			if get_parent().position.y == (48 * grid_pos.y + 16):
+				movement_buffer.pop_front()
+				movement_done = true
 		Direction.RIGHT:
-			if stored_direction == Direction.LEFT:
-				return true
+			get_parent().position.x += 2
+			if get_parent().position.x == (48 * grid_pos.x + 24):
+				movement_buffer.pop_front()
+				movement_done = true
 		Direction.LEFT:
-			if stored_direction == Direction.RIGHT:
-				return true
-	return false
+			get_parent().position.x -= 2
+			if get_parent().position.x == (48 * grid_pos.x + 24):
+				movement_buffer.pop_front()
+				movement_done = true
+
+func add_to_movement_buffer(direction):
+	if !(movement_buffer.size() >= movement_buffer_max_size):
+		movement_buffer.append(direction)
+	
