@@ -1,7 +1,5 @@
 extends CharacterBody2D
 
-#@export var initial_x : int
-#@export var initial_y : int
 @export var grid_pos : Vector2
 @export var map_path : String
 
