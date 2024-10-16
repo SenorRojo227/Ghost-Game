@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://dfs0ke7m8epfv"]
+
+[ext_resource type="Texture2D" uid="uid://q2wfdvu4cf0v" path="res://Assets/Tomato.png" id="1_bw5qg"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ksgct"]
+radius = 16.0
+
+[node name="Tomato" type="CharacterBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_bw5qg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ksgct")
