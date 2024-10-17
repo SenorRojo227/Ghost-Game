@@ -19,9 +19,13 @@ func _ready() -> void:
 		pass
 	map_ready.emit()
 	print("map is ready!")
+	claim_initial_grid_point(Vector2(13,7), OccupantType.WALL)
+	claim_initial_grid_point(Vector2(14,7), OccupantType.WALL)
+	claim_initial_grid_point(Vector2(14,8), OccupantType.WALL)
 
 func claim_initial_grid_point(location: Vector2, occupant_type: OccupantType):
-	print(OccupantType.find_key(occupant_type), " claimed initial spot of ", location)
+	if(occupant_type != OccupantType.WALL):
+		print(OccupantType.find_key(occupant_type), " claimed initial spot of ", location)
 	search_for_grid_point(location).tile_occupant = occupant_type
 	
 
@@ -34,6 +38,9 @@ func claim_grid_point(previous_location: Vector2, location: Vector2, occupant_ty
 			print(OccupantType.find_key(occupant_type), " claimed ", location)
 			return true
 	return false
+	
+func unclaim_grid_point(location: Vector2):
+	search_for_grid_point(location).tile_occupant = OccupantType.EMPTY
 	
 
 func search_for_grid_point(location: Vector2):

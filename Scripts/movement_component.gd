@@ -17,7 +17,6 @@ func _ready() -> void:
 	
 func _on_map_ready():
 	grid_component.claim_initial_grid_point(grid_pos, character_type)
-	print("Player claimed:", grid_pos)
 	
 func _process(delta: float) -> void:
 	handle_movement()
@@ -41,32 +40,27 @@ func handle_movement():
 	if grid_component.claim_grid_point(grid_pos, temp_grid_pos, character_type):
 		movement_done = false
 		grid_pos = temp_grid_pos
+	else:
+		movement_buffer.pop_front()
+		return
 	
 func move_character():
 	if movement_buffer.size() == 0:
 		return
 		
-	match movement_buffer[0]:
-		Direction.UP:
-			get_parent().position.y -= 2
-			if get_parent().position.y == (48 * grid_pos.y + 16):
-				movement_buffer.pop_front()
-				movement_done = true
-		Direction.DOWN:
-			get_parent().position.y += 2
-			if get_parent().position.y == (48 * grid_pos.y + 16):
-				movement_buffer.pop_front()
-				movement_done = true
-		Direction.RIGHT:
-			get_parent().position.x += 2
-			if get_parent().position.x == (48 * grid_pos.x + 24):
-				movement_buffer.pop_front()
-				movement_done = true
-		Direction.LEFT:
-			get_parent().position.x -= 2
-			if get_parent().position.x == (48 * grid_pos.x + 24):
-				movement_buffer.pop_front()
-				movement_done = true
+	# Move towards target coordinates
+	
+	if get_parent().position.y > (48 * grid_pos.y + 16):
+		get_parent().position.y -= 2
+	elif get_parent().position.y < (48 * grid_pos.y + 16):
+		get_parent().position.y += 2
+	elif get_parent().position.x > (48 * grid_pos.x + 24):
+		get_parent().position.x -= 2
+	elif get_parent().position.x < (48 * grid_pos.x + 24):
+		get_parent().position.x += 2
+	else:
+		movement_buffer.pop_front()
+		movement_done = true
 
 func add_to_movement_buffer(direction):
 	if !(movement_buffer.size() >= movement_buffer_max_size):
