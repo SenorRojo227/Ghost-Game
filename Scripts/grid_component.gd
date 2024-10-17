@@ -28,16 +28,20 @@ func claim_initial_grid_point(location: Vector2, occupant_type: OccupantType):
 		print(OccupantType.find_key(occupant_type), " claimed initial spot of ", location)
 	search_for_grid_point(location).tile_occupant = occupant_type
 	
-
+# Method needs to be called before moving to a grid point. Returns the
+# type of occupant currently in the grid point being moved to to allow for
+# enemy attacks or possibly tooltips.
 func claim_grid_point(previous_location: Vector2, location: Vector2, occupant_type: OccupantType):
 	var grid_point = search_for_grid_point(location)
 	if grid_point != null:
-		if grid_point.tile_occupant == OccupantType.EMPTY:
+		var original_grid_occupant = grid_point.tile_occupant
+		if original_grid_occupant == OccupantType.EMPTY:
 			search_for_grid_point(previous_location).tile_occupant = OccupantType.EMPTY
 			grid_point.tile_occupant = occupant_type
-			print(OccupantType.find_key(occupant_type), " claimed ", location)
-			return true
-	return false
+			# print(OccupantType.find_key(occupant_type), " claimed ", location)
+		return original_grid_occupant
+	else:
+		return OccupantType.WALL
 	
 func unclaim_grid_point(location: Vector2):
 	search_for_grid_point(location).tile_occupant = OccupantType.EMPTY

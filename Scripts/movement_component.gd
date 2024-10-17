@@ -37,7 +37,8 @@ func handle_movement():
 		Direction.LEFT:
 			temp_grid_pos.x -= 1
 
-	if grid_component.claim_grid_point(grid_pos, temp_grid_pos, character_type):
+	if(grid_component.claim_grid_point(grid_pos, temp_grid_pos, character_type)
+			 == grid_component.OccupantType.EMPTY):
 		movement_done = false
 		grid_pos = temp_grid_pos
 	else:
