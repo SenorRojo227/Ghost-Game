@@ -1,15 +1,14 @@
-[gd_scene load_steps=14 format=3 uid="uid://ccg1sypslu0bg"]
+[gd_scene load_steps=13 format=3 uid="uid://ccg1sypslu0bg"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_wb3b5"]
 [ext_resource type="Texture2D" uid="uid://dj1rja4cy35ik" path="res://Assets/Ghost1.png" id="2_ahfys"]
-[ext_resource type="Script" path="res://Assets/MapData/map1_points.gd" id="2_rbytm"]
-[ext_resource type="Texture2D" uid="uid://diw7t5bawvemv" path="res://Assets/Shadow.png" id="2_t44j6"]
 [ext_resource type="Texture2D" uid="uid://dean3f6ysxm2g" path="res://Assets/Ghost2.png" id="3_fvmx1"]
 [ext_resource type="Texture2D" uid="uid://dnfriiymjl8vx" path="res://Assets/Ghost6.png" id="4_04bhc"]
 [ext_resource type="Texture2D" uid="uid://bowbwpffry2ah" path="res://Assets/Ghost3.png" id="4_5l2tf"]
 [ext_resource type="Texture2D" uid="uid://3mbebla1yox1" path="res://Assets/Ghost7.png" id="5_lbb7e"]
 [ext_resource type="Texture2D" uid="uid://1vyps2otvro" path="res://Assets/Ghost5.png" id="5_qm3je"]
 [ext_resource type="Texture2D" uid="uid://cf0iafdsksn86" path="res://Assets/Ghost4.png" id="6_2kaih"]
+[ext_resource type="PackedScene" uid="uid://xtvimqp7hhos" path="res://Scenes/ShadowComponent.tscn" id="9_ckgvw"]
 [ext_resource type="PackedScene" uid="uid://d3l70m2lja4uc" path="res://Scenes/MovementComponent.tscn" id="10_rcibx"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_bk1q6"]
@@ -69,13 +68,7 @@ radius = 22.8
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("movement_component")]
 script = ExtResource("1_wb3b5")
 movement_component = NodePath("MovementComponent")
-map = ExtResource("2_rbytm")
 metadata/_edit_group_ = true
-
-[node name="Shadow" type="Sprite2D" parent="."]
-modulate = Color(1, 1, 1, 0.764706)
-position = Vector2(0, 20)
-texture = ExtResource("2_t44j6")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_bk1q6")
@@ -85,6 +78,8 @@ frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_3g4kp")
+
+[node name="ShadowComponent" parent="." instance=ExtResource("9_ckgvw")]
 
 [node name="MovementComponent" parent="." instance=ExtResource("10_rcibx")]
 grid_pos = Vector2(12, 7)
