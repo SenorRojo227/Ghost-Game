@@ -40,7 +40,6 @@ radius = 16.0
 [node name="Tomato" type="CharacterBody2D" node_paths=PackedStringArray("movement_component")]
 script = ExtResource("1_qvgu8")
 movement_component = NodePath("MovementComponent")
-horizontal = true
 metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]

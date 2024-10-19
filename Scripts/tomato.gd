@@ -1,15 +1,15 @@
 extends CharacterBody2D
 
 @export var movement_component : MovementComponent
-@export var horizontal : bool
+@export var player : CharacterBody2D
 
 func _ready() -> void:
-	pass
+	player.game_tick.connect(_on_game_tick)
 
 func _process(delta: float) -> void:
-	if Input.is_action_just_pressed("movement"):
-		if horizontal:
-			movement_component.set_direction(movement_component.Direction.RIGHT)
-		else:
-			movement_component.set_direction(movement_component.Direction.DOWN)
 	movement_component.move(self, true)
+
+func _on_game_tick() -> void:
+	movement_component.set_direction(movement_component.get_direction())
+	if !movement_component.check_if_moving():
+		movement_component.set_direction(movement_component.get_direction(true))
