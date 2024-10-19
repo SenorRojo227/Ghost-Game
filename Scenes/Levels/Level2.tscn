@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=4 uid="uid://b77gte811qcmg"]
+[gd_scene load_steps=10 format=4 uid="uid://b77gte811qcmg"]
 
 [ext_resource type="Texture2D" uid="uid://btpocvruhbg65" path="res://Assets/Tileset.png" id="1_4s0yj"]
 [ext_resource type="Script" path="res://Scripts/level.gd" id="1_n17km"]
@@ -48,6 +48,8 @@ custom_data_layer_0/name = "interact_type"
 custom_data_layer_0/type = 2
 sources/0 = SubResource("TileSetAtlasSource_lpkh6")
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bxuoo"]
+
 [node name="Level" type="Node2D" node_paths=PackedStringArray("player")]
 script = ExtResource("1_n17km")
 player = NodePath("Player")
@@ -77,6 +79,7 @@ grid_component = NodePath("../../GridComponent")
 initial_direction = 2
 
 [node name="Booker" parent="." node_paths=PackedStringArray("movement_component") instance=ExtResource("5_flsw2")]
+position = Vector2(600, 206)
 movement_component = NodePath("MovementComponent")
 
 [node name="AnimatedSprite2D" parent="Booker" index="0"]
@@ -87,7 +90,17 @@ grid_pos = Vector2i(12, 4)
 grid_component = NodePath("../../GridComponent")
 initial_direction = 1
 
+[node name="Vision" type="Area2D" parent="Booker"]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Booker/Vision"]
+position = Vector2(0, 168)
+scale = Vector2(1, 15)
+shape = SubResource("RectangleShape2D_bxuoo")
+
 [node name="GridComponent" parent="." instance=ExtResource("4_4fjb5")]
+
+[connection signal="body_entered" from="Booker/Vision" to="Booker" method="_on_vision_body_entered"]
 
 [editable path="Player"]
 [editable path="Tomato"]

@@ -3,6 +3,7 @@ extends CharacterBody2D
 @export var movement_component : MovementComponent
 
 signal game_tick
+signal game_over(enemy : CharacterBody2D)
 
 func _ready() -> void:
 	pass

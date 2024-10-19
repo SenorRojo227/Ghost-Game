@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dfs0ke7m8epfv"]
+[gd_scene load_steps=10 format=3 uid="uid://dfs0ke7m8epfv"]
 
 [ext_resource type="Script" path="res://Scripts/tomato.gd" id="1_qvgu8"]
 [ext_resource type="Texture2D" uid="uid://dj8spt1bl4qg1" path="res://Assets/Tomato2.png" id="2_dfdnw"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://d3l70m2lja4uc" path="res://Scenes/MovementComponent.tscn" id="3_glrcp"]
 [ext_resource type="Texture2D" uid="uid://qyhvxo74kd2q" path="res://Assets/Tomato3.png" id="4_q1053"]
 [ext_resource type="PackedScene" uid="uid://xtvimqp7hhos" path="res://Scenes/ShadowComponent.tscn" id="6_gkftm"]
+[ext_resource type="PackedScene" uid="uid://by6f5y2de5y7b" path="res://Scenes/HitboxComponent.tscn" id="7_078j8"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_rdrxt"]
 animations = [{
@@ -35,9 +36,10 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ksgct"]
-radius = 9.0
 
 [node name="Tomato" type="CharacterBody2D" node_paths=PackedStringArray("movement_component")]
+collision_layer = 0
+collision_mask = 0
 script = ExtResource("1_qvgu8")
 movement_component = NodePath("MovementComponent")
 metadata/_edit_group_ = true
@@ -53,3 +55,5 @@ shape = SubResource("CircleShape2D_ksgct")
 
 [node name="ShadowComponent" parent="." instance=ExtResource("6_gkftm")]
 position = Vector2(0, 16)
+
+[node name="HitboxComponent" parent="." instance=ExtResource("7_078j8")]

@@ -68,6 +68,7 @@ animations = [{
 radius = 11.0
 
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("movement_component")]
+collision_mask = 0
 script = ExtResource("1_wb3b5")
 movement_component = NodePath("MovementComponent")
 metadata/_edit_group_ = true
