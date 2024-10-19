@@ -1,9 +1,11 @@
-[gd_scene load_steps=7 format=4 uid="uid://b77gte811qcmg"]
+[gd_scene load_steps=9 format=4 uid="uid://b77gte811qcmg"]
 
 [ext_resource type="Texture2D" uid="uid://btpocvruhbg65" path="res://Assets/Tileset.png" id="1_4s0yj"]
+[ext_resource type="Script" path="res://Scripts/level.gd" id="1_n17km"]
 [ext_resource type="PackedScene" uid="uid://ccg1sypslu0bg" path="res://Scenes/Player.tscn" id="2_jehbx"]
 [ext_resource type="PackedScene" uid="uid://dfs0ke7m8epfv" path="res://Scenes/Tomato.tscn" id="3_lfndc"]
 [ext_resource type="PackedScene" uid="uid://b75jx1olls6sh" path="res://Scenes/GridComponent.tscn" id="4_4fjb5"]
+[ext_resource type="PackedScene" uid="uid://bbwg750w36ttv" path="res://Scenes/Booker.tscn" id="5_flsw2"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lpkh6"]
 texture = ExtResource("1_4s0yj")
@@ -46,7 +48,10 @@ custom_data_layer_0/name = "interact_type"
 custom_data_layer_0/type = 2
 sources/0 = SubResource("TileSetAtlasSource_lpkh6")
 
-[node name="Level" type="Node2D"]
+[node name="Level" type="Node2D" node_paths=PackedStringArray("player")]
+script = ExtResource("1_n17km")
+player = NodePath("Player")
+level_dialog = "WhoAmI"
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 z_index = -2
@@ -71,7 +76,19 @@ grid_pos = Vector2i(12, 7)
 grid_component = NodePath("../../GridComponent")
 initial_direction = 2
 
+[node name="Booker" parent="." node_paths=PackedStringArray("movement_component") instance=ExtResource("5_flsw2")]
+movement_component = NodePath("MovementComponent")
+
+[node name="AnimatedSprite2D" parent="Booker" index="0"]
+animation = &"down_idle"
+
+[node name="MovementComponent" parent="Booker" index="3" node_paths=PackedStringArray("grid_component")]
+grid_pos = Vector2i(12, 4)
+grid_component = NodePath("../../GridComponent")
+initial_direction = 1
+
 [node name="GridComponent" parent="." instance=ExtResource("4_4fjb5")]
 
 [editable path="Player"]
 [editable path="Tomato"]
+[editable path="Booker"]
