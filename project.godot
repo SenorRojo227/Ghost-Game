@@ -19,6 +19,7 @@ config/icon="res://Assets/Ghost1.png"
 [autoload]
 
 Dialogic="*res://addons/dialogic/Core/DialogicGameHandler.gd"
+Options="*res://Globals/Options.gd"
 
 [dialogic]
 
