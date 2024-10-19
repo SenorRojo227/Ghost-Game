@@ -124,6 +124,7 @@ wait_time = 0.5
 autostart = true
 
 [connection signal="pressed" from="VBoxContainer/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="VBoxContainer/Options" to="." method="_on_options_pressed"]
 [connection signal="pressed" from="VBoxContainer/Quit" to="." method="_on_quit_pressed"]
 [connection signal="timeout" from="temp_sprite/Timers/BlinkTimer" to="temp_sprite" method="_on_blink_timer_timeout"]
 [connection signal="timeout" from="temp_sprite/Timers/FloatTimer" to="temp_sprite" method="_on_float_timer_timeout"]

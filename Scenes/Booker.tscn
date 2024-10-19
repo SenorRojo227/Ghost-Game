@@ -1,0 +1,86 @@
+[gd_scene load_steps=15 format=3 uid="uid://bbwg750w36ttv"]
+
+[ext_resource type="Script" path="res://Scripts/booker.gd" id="1_ug1ok"]
+[ext_resource type="Texture2D" uid="uid://ca2id8d0kcdyv" path="res://Assets/SmugGhost2.png" id="2_37ejf"]
+[ext_resource type="Texture2D" uid="uid://lpqjqt75s77m" path="res://Assets/SmugGhost4.png" id="2_73x2a"]
+[ext_resource type="Texture2D" uid="uid://c7bq1liks232f" path="res://Assets/SmugGhost1.png" id="3_sjtum"]
+[ext_resource type="Texture2D" uid="uid://xjqhnhwtjf6l" path="res://Assets/SmugGhost5.png" id="3_xxewu"]
+[ext_resource type="Texture2D" uid="uid://cj75f1hqgtgac" path="res://Assets/SmugGhost3.png" id="4_nv155"]
+[ext_resource type="Texture2D" uid="uid://cryejjxogca7q" path="res://Assets/SmugGhost6.png" id="4_ts1ba"]
+[ext_resource type="PackedScene" uid="uid://xtvimqp7hhos" path="res://Scenes/ShadowComponent.tscn" id="5_q7fwi"]
+[ext_resource type="PackedScene" uid="uid://d3l70m2lja4uc" path="res://Scenes/MovementComponent.tscn" id="6_rccbi"]
+[ext_resource type="PackedScene" uid="uid://oxptbwdl1k6q" path="res://Scenes/FloatComponent.tscn" id="7_l4k7g"]
+[ext_resource type="Texture2D" uid="uid://caq8bjbtkufdh" path="res://Assets/SmugGhost7.png" id="8_spqoy"]
+[ext_resource type="PackedScene" uid="uid://d2bxdilxkpu7a" path="res://Scenes/BlinkComponent.tscn" id="12_3f6dk"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_leu6c"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_73x2a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_xxewu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_ts1ba")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_xxewu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_73x2a")
+}],
+"loop": false,
+"name": &"down_idle",
+"speed": 15.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_sjtum")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_37ejf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_nv155")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_37ejf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_sjtum")
+}],
+"loop": true,
+"name": &"side_idle",
+"speed": 15.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_spqoy")
+}],
+"loop": true,
+"name": &"up_idle",
+"speed": 15.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qcfuu"]
+radius = 11.0454
+
+[node name="Booker" type="CharacterBody2D"]
+script = ExtResource("1_ug1ok")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_leu6c")
+animation = &"side_idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_qcfuu")
+
+[node name="ShadowComponent" parent="." instance=ExtResource("5_q7fwi")]
+
+[node name="MovementComponent" parent="." instance=ExtResource("6_rccbi")]
+
+[node name="FloatComponent" parent="." instance=ExtResource("7_l4k7g")]
+
+[node name="BlinkComponent" parent="." instance=ExtResource("12_3f6dk")]

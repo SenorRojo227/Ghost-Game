@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://ccg1sypslu0bg"]
+[gd_scene load_steps=15 format=3 uid="uid://ccg1sypslu0bg"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_wb3b5"]
 [ext_resource type="Texture2D" uid="uid://dj1rja4cy35ik" path="res://Assets/Ghost1.png" id="2_ahfys"]
@@ -10,6 +10,8 @@
 [ext_resource type="Texture2D" uid="uid://cf0iafdsksn86" path="res://Assets/Ghost4.png" id="6_2kaih"]
 [ext_resource type="PackedScene" uid="uid://xtvimqp7hhos" path="res://Scenes/ShadowComponent.tscn" id="9_ckgvw"]
 [ext_resource type="PackedScene" uid="uid://d3l70m2lja4uc" path="res://Scenes/MovementComponent.tscn" id="10_rcibx"]
+[ext_resource type="PackedScene" uid="uid://oxptbwdl1k6q" path="res://Scenes/FloatComponent.tscn" id="11_jfwb6"]
+[ext_resource type="PackedScene" uid="uid://d2bxdilxkpu7a" path="res://Scenes/BlinkComponent.tscn" id="12_gm517"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_bk1q6"]
 animations = [{
@@ -63,7 +65,7 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3g4kp"]
-radius = 22.8
+radius = 11.0
 
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("movement_component")]
 script = ExtResource("1_wb3b5")
@@ -83,15 +85,6 @@ shape = SubResource("CircleShape2D_3g4kp")
 
 [node name="MovementComponent" parent="." instance=ExtResource("10_rcibx")]
 
-[node name="Timers" type="Node2D" parent="."]
+[node name="FloatComponent" parent="." instance=ExtResource("11_jfwb6")]
 
-[node name="BlinkTimer" type="Timer" parent="Timers"]
-wait_time = 5.0
-autostart = true
-
-[node name="FloatTimer" type="Timer" parent="Timers"]
-wait_time = 0.5
-autostart = true
-
-[connection signal="timeout" from="Timers/BlinkTimer" to="." method="_on_blink_timer_timeout"]
-[connection signal="timeout" from="Timers/FloatTimer" to="." method="_on_float_timer_timeout"]
+[node name="BlinkComponent" parent="." instance=ExtResource("12_gm517")]

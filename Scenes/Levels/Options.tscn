@@ -1,0 +1,42 @@
+[gd_scene load_steps=3 format=3 uid="uid://exj5s2nn4kw2"]
+
+[ext_resource type="Theme" uid="uid://cxpf3sw54u5q5" path="res://Assets/MenuTheme/menu_theme.tres" id="1_bbdcw"]
+[ext_resource type="Script" path="res://Scripts/MenuButtons/OptionsMenu.gd" id="2_wai3p"]
+
+[node name="Options" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_bbdcw")
+script = ExtResource("2_wai3p")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer"]
+layout_mode = 2
+text = "Music Volume"
+
+[node name="AudioVolumeSlider" type="HSlider" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="ReturnToMenuButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Back To Menu"
+
+[connection signal="value_changed" from="VBoxContainer/AudioVolumeSlider" to="." method="_on_audio_volume_slider_value_changed"]
+[connection signal="pressed" from="VBoxContainer/ReturnToMenuButton" to="." method="_on_return_to_menu_button_pressed"]

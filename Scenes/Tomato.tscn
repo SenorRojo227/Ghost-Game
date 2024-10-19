@@ -35,7 +35,7 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ksgct"]
-radius = 16.0
+radius = 9.0
 
 [node name="Tomato" type="CharacterBody2D" node_paths=PackedStringArray("movement_component")]
 script = ExtResource("1_qvgu8")
