@@ -8,6 +8,7 @@ enum Direction {UP, DOWN, LEFT, RIGHT}
 @export var grid_pos : Vector2i
 @export var grid_component : GridComponent
 @export var initial_direction : Direction
+@export var disabled : bool = false
 
 var is_moving : bool = false
 var is_flipped : bool = false
@@ -17,10 +18,11 @@ var new_pos : Vector2i
 var new_tile : int
 
 func _ready() -> void:
-	get_parent().position.x = 48 * grid_pos.x + 24
-	get_parent().position.y = 48 * grid_pos.y + 16
-	set_direction(initial_direction)
-	is_moving = false
+	if !disabled:
+		get_parent().position.x = 48 * grid_pos.x + 24
+		get_parent().position.y = 48 * grid_pos.y + 16
+		set_direction(initial_direction)
+		is_moving = false
 
 func check_if_moving() -> bool:
 	return is_moving
@@ -43,7 +45,7 @@ func get_direction(flip_direction = false) -> Direction:
 
 func set_direction(direction : Direction) -> void:
 	
-	if Dialogic.current_timeline == null:
+	if Dialogic.current_timeline == null && !disabled:
 		#Recalibrate new_pos
 		new_pos = grid_pos
 		

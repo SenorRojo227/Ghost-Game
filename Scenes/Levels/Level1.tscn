@@ -60,10 +60,6 @@ tile_set = SubResource("TileSet_7u6wo")
 
 [node name="Player" parent="." instance=ExtResource("2_cycw4")]
 
-[node name="AnimatedSprite2D" parent="Player" index="0"]
-frame = 0
-frame_progress = 0.0
-
 [node name="MovementComponent" parent="Player" index="3" node_paths=PackedStringArray("grid_component")]
 grid_pos = Vector2i(12, 7)
 grid_component = NodePath("../../GridComponent")

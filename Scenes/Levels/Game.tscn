@@ -9,5 +9,5 @@
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_pitji")
-volume_db = -40.096
+volume_db = -15.036
 autoplay = true
