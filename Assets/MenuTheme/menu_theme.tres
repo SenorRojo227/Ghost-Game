@@ -1,0 +1,8 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://cxpf3sw54u5q5"]
+
+[ext_resource type="FontFile" uid="uid://b5ojfymi7stt5" path="res://Assets/MenuTheme/groutpix-flow-serif/GroutpixFlowSerif-Regular.ttf" id="1_ieuvb"]
+
+[resource]
+default_font = ExtResource("1_ieuvb")
+/colors/ButtonBackground = Color(0, 0, 0, 0)
+/fonts/Font = ExtResource("1_ieuvb")
