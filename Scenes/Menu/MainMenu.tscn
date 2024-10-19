@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://b0n2nc888qjmx"]
+[gd_scene load_steps=5 format=3 uid="uid://muk1vwbhumq"]
 
 [ext_resource type="Theme" uid="uid://cxpf3sw54u5q5" path="res://Assets/MenuTheme/menu_theme.tres" id="1_pllfo"]
 [ext_resource type="Script" path="res://Scripts/MenuButtons/main_menu_buttons.gd" id="1_vl5m8"]
@@ -40,6 +40,10 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 text = "Options"
 
+[node name="Credits" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Credits"
+
 [node name="Quit" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
@@ -51,10 +55,9 @@ position = Vector2(575, 200)
 scale = Vector2(5, 5)
 script = ExtResource("4_ahgip")
 
-[node name="MovementComponent" parent="Player" index="3"]
-disabled = true
-
 [connection signal="pressed" from="VBoxContainer/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="VBoxContainer/Options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="VBoxContainer/Credits" to="." method="_on_credits_pressed"]
 [connection signal="pressed" from="VBoxContainer/Quit" to="." method="_on_quit_pressed"]
 
 [editable path="Player"]

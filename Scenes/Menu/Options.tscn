@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://exj5s2nn4kw2"]
 
-[ext_resource type="Theme" uid="uid://cxpf3sw54u5q5" path="res://Assets/MenuTheme/menu_theme.tres" id="1_bbdcw"]
-[ext_resource type="Script" path="res://Scripts/MenuButtons/OptionsMenu.gd" id="2_wai3p"]
+[ext_resource type="Theme" uid="uid://cxpf3sw54u5q5" path="res://Assets/MenuTheme/menu_theme.tres" id="1_vbild"]
+[ext_resource type="Script" path="res://Scripts/MenuButtons/OptionsMenu.gd" id="2_syf1f"]
 
 [node name="Options" type="Control"]
 layout_mode = 3
@@ -10,8 +10,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_bbdcw")
-script = ExtResource("2_wai3p")
+theme = ExtResource("1_vbild")
+script = ExtResource("2_syf1f")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
