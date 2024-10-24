@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Ghost Game"
-config/version="0.0.1"
+config/version="0.1.0"
 run/main_scene="res://Scenes/Menu/MainMenu.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://Assets/Ghost1.png"
@@ -20,6 +20,8 @@ config/icon="res://Assets/Ghost1.png"
 
 Dialogic="*res://addons/dialogic/Core/DialogicGameHandler.gd"
 Options="*res://Globals/Options.gd"
+Counters="*res://Globals/Counters.gd"
+MusicController="*res://Globals/MusicController.tscn"
 
 [dialogic]
 
@@ -30,6 +32,7 @@ directories/dch_directory={
 }
 directories/dtl_directory={
 "BookerIntro": "res://Dialogic/Timelines/BookerIntro.dtl",
+"BookerName": "res://Dialogic/Timelines/BookerName.dtl",
 "Start": "res://Dialogic/Timelines/Start.dtl",
 "TomatoInteraction1": "res://Dialogic/Timelines/TomatoInteraction1.dtl",
 "TomatoInteraction2": "res://Dialogic/Timelines/TomatoInteraction2.dtl",

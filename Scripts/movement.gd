@@ -6,7 +6,6 @@ signal advance_level
 enum Direction {UP, DOWN, LEFT, RIGHT}
 
 @export var grid_pos : Vector2i
-@export var grid_component : GridComponent
 @export var initial_direction : Direction
 @export var disabled : bool = false
 
@@ -83,7 +82,7 @@ func set_direction(direction : Direction) -> void:
 		elif new_tile == 2:
 			advance_level.emit()
 
-func move(entity : CharacterBody2D, rotate : bool = false) -> void:
+func move(entity : CharacterBody2D, should_rotate : bool = false) -> void:
 	if Dialogic.current_timeline == null:
 		entity.get_node("AnimatedSprite2D").animation = animation
 		entity.get_node("AnimatedSprite2D").flip_h = is_flipped
@@ -93,7 +92,7 @@ func move(entity : CharacterBody2D, rotate : bool = false) -> void:
 			
 		grid_pos = new_pos
 		entity.position += current_direction
-		if rotate && animation == "side_idle":
+		if should_rotate && animation == "side_idle":
 			entity.get_node("AnimatedSprite2D").rotation_degrees += 15 * (current_direction.x / 2)
 		if entity.position.x == 48 * grid_pos.x + 24 && entity.position.y == 48 * grid_pos.y + 16:
 			is_moving = false

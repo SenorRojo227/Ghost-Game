@@ -5,9 +5,6 @@ enum ScreenSize {FULLSCREEN, WINDOWED, WINDOWED_FULLSCREEN}
 var audio_level: float = 50
 var display_mode: ScreenSize = ScreenSize.WINDOWED
 
-func _process(delta: float) -> void:
-	print(audio_level)
-
 func set_audio_volume(value: float):
 	audio_level = value
 

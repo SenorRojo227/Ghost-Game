@@ -1,10 +1,9 @@
-[gd_scene load_steps=8 format=4 uid="uid://pvt4g5abucij"]
+[gd_scene load_steps=7 format=4 uid="uid://pvt4g5abucij"]
 
 [ext_resource type="Script" path="res://Scripts/level.gd" id="1_c43r0"]
 [ext_resource type="Texture2D" uid="uid://btpocvruhbg65" path="res://Assets/Tileset.png" id="1_hvggl"]
 [ext_resource type="PackedScene" uid="uid://b77gte811qcmg" path="res://Scenes/Levels/Level2.tscn" id="2_5eykd"]
 [ext_resource type="PackedScene" uid="uid://ccg1sypslu0bg" path="res://Scenes/Player.tscn" id="2_cycw4"]
-[ext_resource type="PackedScene" uid="uid://b75jx1olls6sh" path="res://Scenes/GridComponent.tscn" id="3_627xm"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lpkh6"]
 texture = ExtResource("1_hvggl")
@@ -60,10 +59,7 @@ tile_set = SubResource("TileSet_7u6wo")
 
 [node name="Player" parent="." instance=ExtResource("2_cycw4")]
 
-[node name="MovementComponent" parent="Player" index="3" node_paths=PackedStringArray("grid_component")]
+[node name="MovementComponent" parent="Player" index="3"]
 grid_pos = Vector2i(12, 7)
-grid_component = NodePath("../../GridComponent")
-
-[node name="GridComponent" parent="." instance=ExtResource("3_627xm")]
 
 [editable path="Player"]

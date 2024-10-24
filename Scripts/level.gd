@@ -9,16 +9,18 @@ func _ready() -> void:
 	player.game_over.connect(_on_game_over)
 	
 	# Start dialog if one is not running
-	if Dialogic.current_timeline == null:
+	if Dialogic.current_timeline == null && str("Level",Counters.level) != name:
+		print(str("Level",Counters.level))
+		print(name)
+		Counters.level += 1
 		Dialogic.start(level_dialog)
 		get_viewport().set_input_as_handled()
 
 func _on_advance_level():
-	get_parent().add_child(next_level.instantiate())
-	queue_free()
+	get_tree().change_scene_to_packed(next_level)
 
 func _on_game_over(enemy : CharacterBody2D):
-	Dialogic.start(str(enemy.name, "Interaction", 1))
+	Dialogic.start(str(enemy.name, "Interaction", Counters.get_death_dialog(enemy)))
 	get_viewport().set_input_as_handled()
 	await Dialogic.timeline_ended
-	queue_free()
+	get_tree().reload_current_scene()
