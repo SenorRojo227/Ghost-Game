@@ -12,7 +12,7 @@ func increment_deaths(enemy : CharacterBody2D) -> void:
 	deaths[get_enemy_value(enemy)] += 1
 
 func get_enemy_value(enemy : CharacterBody2D) -> int:
-	match(enemy.name):
+	match(enemy.get_meta("enemy_type")):
 		"Booker":
 			return 0
 		"Tomato":

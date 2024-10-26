@@ -42,6 +42,7 @@ text = "Options"
 
 [node name="Credits" type="Button" parent="VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
 text = "Credits"
 
 [node name="Quit" type="Button" parent="VBoxContainer"]

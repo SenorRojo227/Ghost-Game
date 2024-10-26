@@ -43,7 +43,7 @@ collision_mask = 0
 script = ExtResource("1_qvgu8")
 movement_component = NodePath("MovementComponent")
 metadata/_edit_group_ = true
-metadata/value = 0
+metadata/enemy_type = "Tomato"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_rdrxt")

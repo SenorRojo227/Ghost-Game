@@ -1,10 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://dxwm3tleukgkb"]
+[gd_scene load_steps=4 format=3 uid="uid://dxwm3tleukgkb"]
 
 [ext_resource type="Script" path="res://Globals/music_controller.gd" id="1_papqk"]
 [ext_resource type="AudioStream" uid="uid://dnepm4wody8y2" path="res://Assets/Audio/Clouded Thoughts.mp3" id="2_x0l28"]
+[ext_resource type="AudioStream" uid="uid://di48p0j7f0s6c" path="res://Assets/Audio/Voices.mp3" id="3_sd4gy"]
 
 [node name="MusicController" type="Node"]
 script = ExtResource("1_papqk")
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_x0l28")
+parameters/looping = true
+
+[node name="MenuSounds" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_sd4gy")
+volume_db = -12.53
+autoplay = true
+parameters/looping = true
